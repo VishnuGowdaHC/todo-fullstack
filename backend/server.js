@@ -43,6 +43,21 @@ app.put('/', (req,res) => {
   console.log(isComplete )
 })
 
+app.put('/edit', (req,res) => {
+  const { id, title } = req.body
+  try {
+    if (id === undefined) return console.error("error code 404 missing id or check")
+      db.query("UPDATE tasks SET title = ? WHERE id = ?", [title, id])
+  } catch (error) {
+    console.error("Server error at updating edited todo" + error)
+  }
+})
+
+app.delete('/tasks/:id', (req,res) => {
+  const { id } = req.params
+  db.query("DELETE FROM tasks WHERE id = ?", [id])
+})
+
 app.listen(3000, () => {
   console.log("Server is runing at port 3000")
 })
